@@ -45,6 +45,16 @@ export class EmployeesTableComponent implements OnInit {
     this.getAllEmployess();
   }
 
+  getAllEmployess() {
+    this.subscription.add(
+      this._employee.getAllEmployess().subscribe((res: any) => {
+        this.data = res;
+        this.pageOptions.length = this.data.length;
+        this.totalItems = this.data.length;
+      })
+    );
+  }
+
   sortName() {
     this.sortAZ = !this.sortAZ;
     if (this.sortAZ) {
@@ -71,6 +81,7 @@ export class EmployeesTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getAllEmployess();
+        this.selection.clear();
       }
     });
   }
@@ -85,17 +96,9 @@ export class EmployeesTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getAllEmployess();
+        this.selection.clear();
       }
     });
-  }
-  getAllEmployess() {
-    this.subscription.add(
-      this._employee.getAllEmployess().subscribe((res: any) => {
-        this.data = res;
-        this.pageOptions.length = this.data.length;
-        this.totalItems = this.data.length;
-      })
-    );
   }
 
   deleteItem(rowdata: Employee) {
@@ -112,29 +115,32 @@ export class EmployeesTableComponent implements OnInit {
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.getAllEmployess();
+          this.selection.clear();
         }
       })
     );
   }
 
-
-
   deleteSelectedEmp(rowdata: Employee) {
-    const dialogRef = this.dialog.open(this.confirmDialog, {
-      width: '300px',
-      id: 'delete',
-      data: {
-        employeeI: rowdata,
-      },
-    });
-
-    this.subscription.add(
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          this.getAllEmployess();
-        }
-      })
-    );
+    if(this.selection.selected.length){
+      const dialogRef = this.dialog.open(this.confirmDialog, {
+        width: '300px',
+        id: 'delete',
+        data: {
+          employeeI: rowdata,
+        },
+      });
+  
+      this.subscription.add(
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.getAllEmployess();
+            this.selection.clear();
+          }
+        })
+      );
+    }
+    
   }
 
   confirmeDelete(id: any) {
@@ -148,8 +154,7 @@ export class EmployeesTableComponent implements OnInit {
         })
       );
 
-    }
-    else {
+    } else {
       this.idsOfSelectedemployee.forEach((employeeId) => {
         this.subscription.add(
           this._employee.deleteEmpByID(employeeId).subscribe((res: any) => {
@@ -159,8 +164,6 @@ export class EmployeesTableComponent implements OnInit {
           })
         );
       });
-
-
     }
 
   }
@@ -203,3 +206,4 @@ export class EmployeesTableComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 }
+
