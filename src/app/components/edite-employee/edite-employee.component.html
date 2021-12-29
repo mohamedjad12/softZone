@@ -1,0 +1,80 @@
+<section class=" text-secondary">
+  <div class=" p-3  d-flex m-0  justify-content-between border-bottom">
+    <h3 class="m-0">Add Employee</h3>
+    <mat-icon [matDialogClose]>close</mat-icon>
+
+  </div>
+  <form [formGroup]="form" class="form border-bottom px-3">
+    <div class="py-3 form-group">
+      <label for="floatingname">Name</label>
+      <input formControlName="empName" type="text" class="form-control" id="floatingname" placeholder="Name">
+    </div>
+
+    <!-- Start Front End Errors -->
+    <ng-container *ngIf="addEmployeeFormControl.empName.touched && addEmployeeFormControl.empName.errors">
+      <small class="text-danger form-groub__error-message m-0" *ngIf="addEmployeeFormControl.empName.errors?.required">
+        Name is Requird
+      </small>
+    </ng-container>
+    <!-- End Front End Errors -->
+
+    <div class=" py-3 form-group">
+      <label for="floatingEmail">Email</label>
+      <input formControlName="empEmail" type="email" class="form-control" id="floatingEmail"
+        placeholder="name@example.com">
+    </div>
+
+    <!-- Start Front End Errors -->
+    <ng-container *ngIf="addEmployeeFormControl.empEmail.touched && addEmployeeFormControl.empEmail.errors">
+      <small class="text-danger form-groub__error-message m-0" *ngIf="addEmployeeFormControl.empEmail.errors?.required">
+        Email is Requird
+      </small>
+      <small class="text-danger form-groub__error-message m-0" *ngIf="addEmployeeFormControl.empEmail.errors?.email">
+        Mail is not valid
+      </small>
+    </ng-container>
+    <!-- End Front End Errors -->
+
+
+    <div class=" py-3 form-group">
+      <label for="floatingAddress">Address</label>
+      <textarea formControlName="empAddress" class="form-control" id="floatingAddress" rows="3"></textarea>
+    </div>
+
+    <!-- Start Front End Errors -->
+    <ng-container *ngIf="addEmployeeFormControl.empAddress.touched && addEmployeeFormControl.empAddress.errors">
+      <small class="text-danger form-groub__error-message m-0"
+        *ngIf="addEmployeeFormControl.empAddress.errors?.required">
+        Address is Requird
+      </small>
+    </ng-container>
+    <!-- End Front End Errors -->
+
+
+
+    <div class=" py-3 form-group">
+      <label for="phone">Phone</label>
+      <input formControlName="empPhone" type="tel" class="form-control" id="phone"
+        placeholder="Enter your phone number">
+    </div>
+
+
+    <!-- Start Front End Errors -->
+    <ng-container *ngIf="addEmployeeFormControl.empPhone.touched && addEmployeeFormControl.empPhone.errors">
+      <small class="text-danger form-groub__error-message m-0" *ngIf="addEmployeeFormControl.empPhone.errors?.required">
+        Phone is Requird
+      </small>
+      <small class="text-danger form-groub__error-message m-0" *ngIf="addEmployeeFormControl.empPhone.errors?.pattern">
+        Phone number must start with (010 or 011 or 012)
+      </small>
+    </ng-container>
+    <!-- End Front End Errors -->
+
+
+  </form>
+  <div class="bg-light d-flex justify-content-end p-3">
+    <button mat-button color="black" (click)="cancel()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || requestCmoplete"
+      type="submit">Save</button>
+  </div>
+</section>

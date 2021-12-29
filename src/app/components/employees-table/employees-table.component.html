@@ -1,0 +1,91 @@
+<div class="container">
+  <!-- begin:Table Header -->
+  <div class="header d-flex align-items-center justify-content-between px-3 py-2 w-100">
+    <h2 class="text-white m-0"> Manage<span class="fw-bold ms-1">Employee</span></h2>
+    <div>
+      <button *ngIf="data.length !== 0" mat-flat-button class="me-2" color="warn" (click)="deleteSelectedEmp(employee)">
+        <mat-icon>remove_circle</mat-icon> Delete
+      </button>
+      <button (click)=" openDialogAdd()" mat-flat-button color="accent">
+        <mat-icon>add_circle</mat-icon> Add New Employee
+      </button>
+    </div>
+  </div>
+  <!-- begin:Table Header -->
+
+  <!-- begin:Table -->
+  <div class="table-responsive text-center mat-elevation-z8 w-100 angular-bootstrap-table">
+    <h2 *ngIf="data.length == 0" class="text-danger p-4">No employees found</h2>
+
+    <table *ngIf="data.length !== 0" class="table table-head-custom table-vertical-center overflow-hidden">
+      <thead>
+        <th>
+          <mat-checkbox (change)="$event ? masterToggle() : null; " [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()"
+            [color]="'primary'">
+          </mat-checkbox>
+        </th>
+        <th class="boint" (click)="sortName()">Name</th>
+        <th>Email</th>
+        <th class="boint" (click)="sortAddress()">Address</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let property of data | slice: (page-1) * pageOptions.defaultPageSize : (page-1) * pageOptions.defaultPageSize + pageOptions.defaultPageSize">
+          <td>
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(property) : null;"
+              [checked]="selection.isSelected(property)" [aria-label]="checkboxLabel(property)" [color]="'primary'">
+            </mat-checkbox>
+          </td>
+          <td>{{property.empName}}</td>
+          <td> {{property.empEmail}}</td>
+          <td>{{property.empAddress}}</td>
+          <td>{{property.empPhone}}</td>
+          <td>
+            <mat-icon (click)="openDialogEdit(property)" class="yellow-icon">mode_edit</mat-icon>
+            <mat-icon (click)="deleteItem(property)" class="warn" color="warn">delete</mat-icon>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="data.length !== 0" class="d-flex align-items-center justify-content-between m-auto  w-75 ">
+
+      <h4 class="text-secondary">Showing
+        {{(data | slice: (page-1) * pageOptions.defaultPageSize : (page-1) * pageOptions.defaultPageSize +
+        pageOptions.defaultPageSize).length}}
+        out of {{totalItems}} entries</h4>
+
+      <ngb-pagination [collectionSize]="pageOptions.length" [(page)]="page" [pageSize]="pageOptions.defaultPageSize">
+        <ng-template ngbPaginationPrevious>Prev</ng-template>
+        <ng-template ngbPaginationNext>Next</ng-template>
+        <ng-template ngbPaginationNumber let-p>{{ getPageSymbol(p) }}</ng-template>
+      </ngb-pagination>
+
+    </div>
+
+    <ng-template #confirmDialog>
+      <section class="text-secondary">
+        <div class=" p-3  m-0 d-flex  justify-content-between border-bottom">
+          <h3 class="m-0">Delete Empolyee</h3>
+          <mat-icon [matDialogClose]>close</mat-icon>
+        </div>
+
+        <div class=" p-3  border-bottom">
+          <h4> Are you sure you want to delete these Records? </h4>
+          <small class="text-warning"> This action cannot be undone </small>
+        </div>
+
+        <div class="bg-light d-flex justify-content-end p-3">
+          <button [matDialogClose] mat-button color="black">Cancel</button>
+          <button (click)="confirmeDelete(employeeId)" mat-flat-button color="warn" type="submit"
+            cdkFocusInitial>Delete</button>
+        </div>
+      </section>
+
+    </ng-template>
+  </div>
+  <!-- end: Table -->
+</div>

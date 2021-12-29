@@ -1,0 +1,15 @@
+.form{
+  box-shadow: .5rem .1rem rgb(0 0 0 / 10%) !important;
+}
+
+.mat-primary {
+  background-color: #008CBA;
+  color: #fff;
+}
+.mat-button{
+  color: #000;
+}
+::ng-deep .mat-dialog-container{
+  padding: 0;
+
+}
